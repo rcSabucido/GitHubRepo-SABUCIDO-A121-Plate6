@@ -1,33 +1,67 @@
-import java.util.Scanner;
+import java.util.*;
 
 public class ConnectedGraph {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int connectCount = 0;
-
-        System.out.print("Enter the edge pairs of the graph (separate by comma): ");
+        System.out.print("Enter the edge pairs of the graph (format: U-V, W-X...): ");
         String[] edgeList = sc.nextLine().split(", ");
-        String hold = "";
-        for (int i = 0; i < edgeList.length; i++) {
-            for (int j = i + 1; j < edgeList.length; j++) {
-                System.out.println(edgeList[i] + "->" + edgeList[j]);
-                if (edgeList[i].charAt(edgeList[i].length() - 1) == edgeList[j].charAt(0)) {
-                    hold = "Graph is connected";
-                    connectCount++;
-                } else if (edgeList[i].charAt(0) == edgeList[j].charAt(edgeList[j].length() - 1)) {
-                    hold = "Graph is connected";
-                    connectCount++;
-                } else if (edgeList[i].charAt(0) == edgeList[j].charAt(0)) {
-                    hold = "Graph is connected";
-                }
-                else {
-                    hold = "Graph is not connected";
-                }
-                System.out.println(hold);
-            }
 
+        HashMap<String, ArrayList<String>> graph = new HashMap<>();
+        Set<String> vertices = new HashSet<>();
+
+        for (String edge : edgeList) {
+            String[] vertex = edge.split("-");
+            String u = vertex[0];
+            String v = vertex[1];
+            vertices.add(u);
+            vertices.add(v);
+            graph.putIfAbsent(u, new ArrayList<>());
+            graph.putIfAbsent(v, new ArrayList<>());
+            graph.get(u).add(v);
+            graph.get(v).add(u);
         }
-        System.out.println(hold);
-        System.out.println("Number of connected graphs: " + connectCount);
+
+
+        Set<String> visited = new HashSet<>();
+        List<Set<String>> connectedComponents = new ArrayList<>();
+
+        for (String vertex : vertices) {
+            if (!visited.contains(vertex)) {
+                Set<String> component = new HashSet<>();
+                dfs(vertex, graph, visited, component);
+                connectedComponents.add(component);
+            }
+        }
+
+        int componentsSize = connectedComponents.size();
+        if (componentsSize == 1) {
+            System.out.println("Graph is connected");
+        } else {
+            System.out.println("Graph is not connected");
+            System.out.println("Number of connected components: " + componentsSize);
+            System.out.println("Disconnected Vertices: ");
+            for (Set<String> component : connectedComponents) {
+                System.out.println(component);
+            }
+        }
+
+    }
+
+    private static void dfs(String vertex, HashMap<String, ArrayList<String>> graph, Set<String> visited, Set<String> component) {
+        Stack<String> stack = new Stack<>();
+        stack.push(vertex);
+
+        while (!stack.isEmpty()) {
+            String current = stack.pop();
+            if (!visited.contains(current)) {
+                visited.add(current);
+                component.add(current);
+                for (String neighbor : graph.get(current)) {
+                    if (!visited.contains(neighbor)) {
+                        stack.push(neighbor);
+                    }
+                }
+            }
+        }
     }
 }
