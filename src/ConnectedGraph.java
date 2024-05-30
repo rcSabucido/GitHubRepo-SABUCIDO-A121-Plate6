@@ -6,7 +6,7 @@ public class ConnectedGraph {
         System.out.print("Enter the edge pairs of the graph (format: U-V, W-X...): ");
         String[] edgeList = sc.nextLine().split(", ");
 
-        HashMap<String, ArrayList<String>> graph = new HashMap<>();
+        HashMap<String, ArrayList<String>> adjacencyList = new HashMap<>();
         Set<String> vertices = new HashSet<>();
 
         for (String edge : edgeList) {
@@ -15,10 +15,10 @@ public class ConnectedGraph {
             String v = vertexPair[1];
             vertices.add(u);
             vertices.add(v);
-            graph.putIfAbsent(u, new ArrayList<>());
-            graph.putIfAbsent(v, new ArrayList<>());
-            graph.get(u).add(v);
-            graph.get(v).add(u);
+            adjacencyList.putIfAbsent(u, new ArrayList<>());
+            adjacencyList.putIfAbsent(v, new ArrayList<>());
+            adjacencyList.get(u).add(v);
+            adjacencyList.get(v).add(u);
         }
 
 
@@ -28,7 +28,7 @@ public class ConnectedGraph {
         for (String vertex : vertices) {
             if (!visited.contains(vertex)) {
                 Set<String> component = new HashSet<>();
-                dfs(vertex, graph, visited, component);
+                dfs(vertex, adjacencyList, visited, component);
                 connectedComponents.add(component);
             }
         }
