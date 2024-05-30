@@ -10,9 +10,9 @@ public class ConnectedGraph {
         Set<String> vertices = new HashSet<>();
 
         for (String edge : edgeList) {
-            String[] vertex = edge.split("-");
-            String u = vertex[0];
-            String v = vertex[1];
+            String[] vertexPair = edge.split("-");
+            String u = vertexPair[0];
+            String v = vertexPair[1];
             vertices.add(u);
             vertices.add(v);
             graph.putIfAbsent(u, new ArrayList<>());
@@ -48,19 +48,11 @@ public class ConnectedGraph {
     }
 
     private static void dfs(String vertex, HashMap<String, ArrayList<String>> graph, Set<String> visited, Set<String> component) {
-        Stack<String> stack = new Stack<>();
-        stack.push(vertex);
-
-        while (!stack.isEmpty()) {
-            String current = stack.pop();
-            if (!visited.contains(current)) {
-                visited.add(current);
-                component.add(current);
-                for (String neighbor : graph.get(current)) {
-                    if (!visited.contains(neighbor)) {
-                        stack.push(neighbor);
-                    }
-                }
+        visited.add(vertex);
+        component.add(vertex);
+        for (String neighbor: graph.get(vertex)) {
+            if (!visited.contains(neighbor)) {
+                dfs(neighbor, graph, visited, component);
             }
         }
     }
