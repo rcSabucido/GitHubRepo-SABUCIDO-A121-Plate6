@@ -74,4 +74,33 @@ public class Graph {
     public int getNumberOfDegrees(String vertex) {
         return adjacencyList.get(vertex).size();
     }
+
+    public boolean isBipartite() {
+        HashMap<String, Integer> color = new HashMap<>();
+        for (String vertex : vertices) {
+            if (!color.containsKey(vertex)) {
+                if (!dfsCheckBipartite(vertex, color, 0)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean dfsCheckBipartite(String vertex, HashMap<String, Integer> color, int currentColor) {
+        color.put(vertex, currentColor);
+        int nextColor = 1 - currentColor;
+
+        for(String neighbor : adjacencyList.get(vertex)) {
+            if (!color.containsKey(neighbor)) {
+                if (!dfsCheckBipartite(neighbor, color, nextColor)) {
+                    return false;
+                }
+            } else if (color.get(neighbor) == currentColor) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
+
