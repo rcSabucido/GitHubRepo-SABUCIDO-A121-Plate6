@@ -1,3 +1,11 @@
+/*
+SABUCIDO, Ryz Clyd R.
+BSCS - A121
+CS110-2: Discrete Structures 2
+9:30AM - 10:45AM (MWF)
+Week 8 (May 19-26, 2024)
+Plate #6: Representing Graphs, Graph Isomorphism and Connectivity
+*/
 import java.util.*;
 
 public class IncidenceMatrix {
@@ -46,7 +54,6 @@ public class IncidenceMatrix {
 
         int[][] incidenceMatrix = new int[vertices][edgeList.size()];
 
-        // Fill incidence matrix with the occurrences of edges between vertices
         for (int i = 0; i < edgeList.size(); i++) {
             String[] edge = edgeList.get(i);
             int startIndex = vertexIndexMap.get(edge[0]);
