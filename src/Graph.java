@@ -70,4 +70,8 @@ public class Graph {
 
         return true;
     }
+
+    public int getNumberOfDegrees(String vertex) {
+        return adjacencyList.get(vertex).size();
+    }
 }
