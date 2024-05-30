@@ -15,7 +15,7 @@ public class AdjacencyMatrix {
             }
         }
 
-        HashMap<String, Integer> edgeList = new HashMap<>();
+        HashMap<String, Integer> edgeList = new LinkedHashMap<>();
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (matrix[i][j] > 0) {
